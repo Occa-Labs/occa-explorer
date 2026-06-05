@@ -5,25 +5,41 @@ import { Footer } from "@/components/footer";
 import "./globals.css";
 
 export function generateMetadata(): Metadata {
-  const desc = `Explore any OCCA company, agent, or invoice on ${clusterLabel()}. Pulled live from chain.`;
-  const title = "OCCA Explorer";
+  const cluster = clusterLabel();
+  const url = "https://scan.occaai.com";
+  const desc = `Explore on-chain OCCA companies, agents, transactions, and invoices on ${cluster}. Public block explorer for the OCCA network, pulled live from chain.`;
   return {
-    metadataBase: new URL("https://scan.occaai.com"),
+    metadataBase: new URL(url),
     title: {
-      default: title,
+      default: "OCCA Explorer · On-chain Companies, Agents & Invoices",
       template: "%s · OCCA Explorer",
     },
     description: desc,
+    applicationName: "OCCA Explorer",
+    keywords: [
+      "OCCA",
+      "OCCA Explorer",
+      "block explorer",
+      "Solana",
+      "on-chain companies",
+      "AI agents",
+      "agent invoices",
+      "OCCA network",
+      cluster,
+    ],
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
     openGraph: {
-      title,
+      title: "OCCA Explorer",
       description: desc,
-      url: "https://scan.occaai.com",
+      url,
       siteName: "OCCA Explorer",
       type: "website",
+      locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: "OCCA Explorer",
       description: desc,
     },
   };
