@@ -6,7 +6,7 @@ import "./globals.css";
 
 export function generateMetadata(): Metadata {
   const cluster = clusterLabel();
-  const url = "https://scan.occaai.com";
+  const url = "https://explorer.occaai.com";
   const desc = `Explore on-chain OCCA companies, agents, transactions, and invoices on ${cluster}. Public block explorer for the OCCA network, pulled live from chain.`;
   return {
     metadataBase: new URL(url),
