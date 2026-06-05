@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/* ─── KH Teka (sans) — placeholder font, final font TBD ─── */
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka Mono";
+  src: url("/fonts/KHTekaMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Voyager theme ────────────────────────────────────────────────
+ * Warm near-black page, gradient panels, amber accent. Matched to the
+ * Voyager (Starknet) block-explorer reference.
+ */
+@theme {
+  --color-background: #060605;   /* page base (black) */
+  --color-surface: rgba(255, 255, 255, 0.05);   /* glass card fill */
+  --color-surface-2: rgba(255, 255, 255, 0.07);  /* inner pills / hash bar / chips */
+  --color-foreground: #f1f1f2;   /* primary text (neutral) */
+  --color-muted: #8d8d93;        /* labels (neutral gray) */
+  --color-faint: #56565c;        /* help icons, secondary glyphs */
+  --color-border: rgba(255, 255, 255, 0.08);    /* hairline borders */
+  --color-border-2: rgba(255, 255, 255, 0.12);  /* brighter border on pills */
+
+  --color-accent: #f5841f;       /* amber/orange */
+  --color-accent-2: #efa451;     /* lighter amber for secondary values */
+  --color-success: #4ac97e;      /* accepted / paid */
+  --color-eth: #8c7bf2;          /* purple token glyph */
+  --color-teal: #45c7bd;
+  --color-info: #7aa2ff;
+
+  --font-sans: "KH Teka", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "KH Teka Mono", ui-monospace, "SF Mono", monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
+}
+::selection {
+  background: rgba(245, 132, 31, 0.3);
+  color: #fff;
+}
+body {
+  /* Warm amber glow at the top of the page, fading to black. The cards
+     are neutral glass that sit on top of this gradient. */
+  background-color: #060605;
+  background-image: radial-gradient(
+    2000px 1000px at 18% -80px,
+    rgba(245, 132, 31, 0.105),
+    rgba(245, 132, 31, 0.028) 44%,
+    transparent 80%
+  );
+  background-repeat: no-repeat;
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Small caption used for "Block #", "Hash", "Status" labels. */
+  .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+  }
+  .label-xs {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* ── Card ── solid dark panel (subtle warm gradient). Solid, not glass,
+   * so the active tab + its morph fillets can colour-match exactly. */
+  .card {
+    background: linear-gradient(180deg, #1d1916 0%, #131110 100%);
+    border-radius: 1.25rem;
+    /* breathing room below the last row so it clears the rounded corner.
+       Overridden on cards that set their own padding utility (p-5, py-4). */
+    padding-bottom: 0.5rem;
+  }
+
+  /* ── Detail row ── faint ? · label · value, hairline divider. */
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1.5rem;
+  }
+  .detail-row .row-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 12rem;
+    flex-shrink: 0;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+  .detail-row .row-value {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+  }
+
+  /* Very faint circular "?" preceding each label. */
+  .help-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border-2);
+    color: var(--color-faint);
+    font-size: 0.625rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ── value-pill ── dark chip wrapping a value + copy button. */
+  .value-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-surface-2);
+    border-radius: 0.55rem;
+    padding: 0.2rem 0.28rem 0.2rem 0.65rem;
+  }
+
+  /* ── pill ── generic dark rounded container (hash bar, BLOB, mainnet). */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-surface-2);
+    border-radius: 0.625rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  /* ── chip ── small soft-tinted token (gas prices, exec resources). */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    padding: 0.34rem 0.72rem;
+    font-size: 0.8125rem;
+  }
+  .chip-eth {
+    background: rgba(140, 123, 242, 0.1);
+    color: var(--color-foreground);
+  }
+  .chip-gwei,
+  .chip-amber {
+    background: rgba(245, 132, 31, 0.1);
+    color: var(--color-accent-2);
+  }
+  .chip-green {
+    background: rgba(74, 201, 126, 0.1);
+    color: var(--color-success);
+  }
+  .chip-teal {
+    background: rgba(69, 199, 189, 0.1);
+    color: var(--color-teal);
+  }
+  .chip-neutral {
+    background: var(--color-surface-2);
+    color: var(--color-muted);
+  }
+
+  /* ── badge ── "Accepted on L1" green rounded-full tag. */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    padding: 0.28rem 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .badge-success {
+    background: rgba(74, 201, 126, 0.12);
+    color: var(--color-success);
+  }
+  .badge-amber {
+    background: rgba(245, 132, 31, 0.12);
+    color: var(--color-accent-2);
+  }
+
+  /* ── tabs ── icon + label, active tab merges into the card below
+   * (folder-tab style): rounded top, same glass surface, no bottom edge. */
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    border: 1px solid transparent;
+    border-radius: 1.1rem 1.1rem 0 0;
+    cursor: pointer;
+    transition: color 0.12s ease, background 0.12s ease;
+  }
+  .tab:hover {
+    color: var(--color-foreground);
+  }
+  /* Icon sits in a small rounded-square outline, like the reference. */
+  .tab-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--color-border-2);
+    flex-shrink: 0;
+  }
+  .tab-active {
+    color: var(--color-foreground);
+    background: #1d1916;
+    border-color: transparent;
+    position: relative;
+    z-index: 10;
+    margin-bottom: -1px;
+  }
+  /* Concave "morph" fillets — same solid colour as the card top, so the
+   * tab base flows into the card surface with no seam. */
+  .tab-active::before,
+  .tab-active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 1rem;
+    height: 1rem;
+    background: #1d1916;
+    pointer-events: none;
+  }
+  .tab-active::before {
+    left: -1rem;
+    -webkit-mask: radial-gradient(circle at top left, transparent 1rem, #000 calc(1rem + 0.5px));
+    mask: radial-gradient(circle at top left, transparent 1rem, #000 calc(1rem + 0.5px));
+  }
+  .tab-active::after {
+    right: -1rem;
+    -webkit-mask: radial-gradient(circle at top right, transparent 1rem, #000 calc(1rem + 0.5px));
+    mask: radial-gradient(circle at top right, transparent 1rem, #000 calc(1rem + 0.5px));
+  }
+  /* First tab sits flush with the card's left edge — no left fillet (its
+   * left edge is the card's own edge). Top corners stay rounded. */
+  .tab:first-child.tab-active::before {
+    content: none;
+  }
+  /* Only when the FIRST tab is active does its flush left edge meet the
+   * card — square the card top-left then. For later tabs the active tab
+   * sits inboard, so the card keeps its normal rounded top-left. */
+  .tab-body.first-active > div > .card {
+    border-top-left-radius: 0;
+  }
+
+  /* ── icon button ── solid orange copy / code squares. */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 0.45rem;
+    background: var(--color-accent);
+    color: #1a1206;
+    cursor: pointer;
+    transition: opacity 0.12s ease;
+  }
+  .icon-btn:hover {
+    opacity: 0.88;
+  }
+
+  /* ── nav ── top bar links. */
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: var(--color-foreground);
+  }
+}
+
