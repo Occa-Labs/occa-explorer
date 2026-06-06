@@ -3,9 +3,12 @@ import {
   formatLamports,
   relativeTime,
   shortKey,
+  solscanTxUrl,
+  solscanAccountUrl,
 } from "@/lib/format";
 import { CopyButton } from "./copy-button";
 import { Identicon } from "./identicon";
+import { SolscanLink } from "./solscan-link";
 import type {
   CompanyListItem,
   RecentAgent,
@@ -45,20 +48,23 @@ export function CompaniesFeed({ items }: { items: CompanyListItem[] }) {
   return (
     <>
       {items.map((c) => (
-        <Link
+        <div
           key={c.pda}
-          href={`/company/${c.pda}`}
-          className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border last:border-0 hover:bg-surface-2/40"
+          className="relative flex items-center justify-between gap-3 px-5 py-3 border-b border-border last:border-0 hover:bg-surface-2/40"
         >
+          <Link href={`/company/${c.pda}`} className="absolute inset-0" aria-label={c.name} />
           <div className="flex items-center gap-2.5 min-w-0">
             <Identicon value={c.pda} size={28} className="shrink-0" />
             <div className="min-w-0">
               <div className="truncate text-sm font-medium">{c.name}</div>
-              <div className="mono truncate text-xs text-faint">{shortKey(c.pda, 6, 6)}</div>
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="mono truncate text-xs text-faint">{shortKey(c.pda, 6, 6)}</span>
+                <SolscanLink href={solscanAccountUrl(c.pda)} />
+              </div>
             </div>
           </div>
           <span className="chip chip-amber shrink-0">{c.agentCount} agents</span>
-        </Link>
+        </div>
       ))}
     </>
   );
@@ -110,6 +116,7 @@ export function TransactionsFeed({ items }: { items: RecentTransaction[] }) {
           <div className="flex items-center gap-2 min-w-0">
             <span className="mono truncate text-sm text-accent">{shortKey(t.signature, 6, 6)}</span>
             <span className="relative z-10"><CopyButton value={t.signature} title="Copy signature" /></span>
+            <SolscanLink href={solscanTxUrl(t.signature)} />
           </div>
           <span>
             <span className={`chip !py-0.5 ${t.type === "payment" ? "chip-green" : "chip-amber"}`}>{t.type}</span>

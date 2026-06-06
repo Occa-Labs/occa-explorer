@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { SignatureInfo } from "@/lib/chain";
-import { relativeTime, shortKey } from "@/lib/format";
+import { relativeTime, shortKey, solscanTxUrl } from "@/lib/format";
+import { SolscanLink } from "./solscan-link";
 
 // On-chain signature history for a PDA, pulled live from the Solana RPC.
 export function TxTable({ txs }: { txs: SignatureInfo[] }) {
@@ -26,7 +27,10 @@ export function TxTable({ txs }: { txs: SignatureInfo[] }) {
           className={`relative grid ${cols} items-center gap-3 px-5 py-3 border-b border-border last:border-0 hover:bg-surface-2/40`}
         >
           <Link href={`/tx/${t.signature}`} className="absolute inset-0" aria-label="View transaction" />
-          <span className="mono truncate text-sm text-accent">{shortKey(t.signature, 6, 6)}</span>
+          <span className="flex items-center gap-1.5 min-w-0">
+            <span className="mono truncate text-sm text-accent">{shortKey(t.signature, 6, 6)}</span>
+            <SolscanLink href={solscanTxUrl(t.signature)} />
+          </span>
           <span className="tabular-nums text-sm text-muted">{t.slot.toLocaleString()}</span>
           <span>
             {t.err ? (

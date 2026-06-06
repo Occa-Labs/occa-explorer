@@ -20,6 +20,7 @@ import { TxTable } from "@/components/tx-table";
 import { Identicon } from "@/components/identicon";
 import { CopyButton } from "@/components/copy-button";
 import { BackLink } from "@/components/back-link";
+import { SolscanLink } from "@/components/solscan-link";
 import { IconAgents, IconInvoices, IconTx } from "@/components/icons";
 
 export const revalidate = 30;
@@ -113,9 +114,10 @@ export default async function CompanyPage({
         <MiniCard title="Identity">
           <MiniRow k="Name">{company.name}</MiniRow>
           <MiniRow k="Owner">
-            <a href={solscanAccountUrl(company.ownerWallet)} target="_blank" rel="noreferrer" className="mono text-accent hover:underline">
-              {shortKey(company.ownerWallet, 4, 4)}
-            </a>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="mono text-sm">{shortKey(company.ownerWallet, 4, 4)}</span>
+              <SolscanLink href={solscanAccountUrl(company.ownerWallet)} />
+            </span>
           </MiniRow>
           <MiniRow k="Created">{relativeTime(unix(company.createdAt))}</MiniRow>
         </MiniCard>

@@ -9,6 +9,7 @@ import {
 } from "@/lib/format";
 import { HashBar, MiniCard, MiniRow } from "@/components/detail";
 import { BackLink } from "@/components/back-link";
+import { SolscanLink } from "@/components/solscan-link";
 
 export const revalidate = 30;
 const unix = (d: Date) => Math.floor(new Date(d).getTime() / 1000);
@@ -69,7 +70,10 @@ export default async function InvoicePage({
           </MiniRow>
           <MiniRow k="Tx">
             {inv.txSignature ? (
-              <Link href={`/tx/${inv.txSignature}`} className="mono text-accent hover:underline">{shortKey(inv.txSignature, 4, 4)}</Link>
+              <span className="inline-flex items-center gap-1.5">
+                <Link href={`/tx/${inv.txSignature}`} className="mono text-accent hover:underline">{shortKey(inv.txSignature, 4, 4)}</Link>
+                <SolscanLink href={solscanTxUrl(inv.txSignature)} />
+              </span>
             ) : (
               "—"
             )}

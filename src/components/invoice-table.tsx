@@ -4,7 +4,9 @@ import {
   formatLamports,
   relativeTime,
   shortKey,
+  solscanTxUrl,
 } from "@/lib/format";
+import { SolscanLink } from "./solscan-link";
 
 const unix = (d: Date) => Math.floor(new Date(d).getTime() / 1000);
 
@@ -67,11 +69,14 @@ export function InvoiceTable({
           )}
           <span className="tabular-nums text-sm">{formatLamports(inv.amountLamports)}</span>
           <span><StatusChip status={inv.status} /></span>
-          <span className="min-w-0">
+          <span className="flex items-center gap-1.5 min-w-0">
             {inv.txSignature ? (
-              <Link href={`/tx/${inv.txSignature}`} className="relative z-10 mono text-sm text-accent hover:underline">
-                {shortKey(inv.txSignature, 6, 6)}
-              </Link>
+              <>
+                <Link href={`/tx/${inv.txSignature}`} className="relative z-10 mono truncate text-sm text-accent hover:underline">
+                  {shortKey(inv.txSignature, 6, 6)}
+                </Link>
+                <SolscanLink href={solscanTxUrl(inv.txSignature)} />
+              </>
             ) : (
               <span className="text-faint text-sm">—</span>
             )}

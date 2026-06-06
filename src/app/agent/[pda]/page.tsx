@@ -20,6 +20,7 @@ import { TxTable } from "@/components/tx-table";
 import { Identicon } from "@/components/identicon";
 import { CopyButton } from "@/components/copy-button";
 import { BackLink } from "@/components/back-link";
+import { SolscanLink } from "@/components/solscan-link";
 import { IconInvoices, IconTx } from "@/components/icons";
 
 export const revalidate = 30;
@@ -92,9 +93,10 @@ export default async function AgentPage({
           <MiniRow k="Anchored">{relativeTime(unix(agent.anchoredAt))}</MiniRow>
           <MiniRow k="Anchor Sig">
             {agent.signature ? (
-              <a href={solscanTxUrl(agent.signature)} target="_blank" rel="noreferrer" className="mono text-accent hover:underline">
-                {shortKey(agent.signature, 4, 4)}
-              </a>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="mono text-sm">{shortKey(agent.signature, 4, 4)}</span>
+                <SolscanLink href={solscanTxUrl(agent.signature)} />
+              </span>
             ) : (
               "—"
             )}
