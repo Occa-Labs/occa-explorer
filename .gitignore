@@ -6,3 +6,7 @@ build/
 .env
 .env.local
 .DS_Store
+
+# SSH/TLS private keys — never commit
+*.pem
+*.ppk
